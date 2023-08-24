@@ -2,6 +2,10 @@
 <html>
   <head>
     <title>WebGPU Compute Playground</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.41.0/min/vs/editor/editor.main.min.css"
@@ -21,7 +25,7 @@
         margin-left: auto;
         margin-right: auto;
         margin-top: 0;
-        font-size: 1.4em;
+        font-size: 1.2em;
         text-align: center;
       }
       dialog {
@@ -43,6 +47,10 @@
         text-align: left;
         height: 20em;
       }
+      #result {
+        font-family: ui-monospace;
+        white-space: pre-wrap;
+      }
     </style>
   </head>
 
@@ -52,7 +60,7 @@
     <div id="editor"></div>
 
     <h2 id="resultHeader">Result</h2>
-    <pre id="result"></pre>
+    <div id="result"></div>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.41.0/min/vs/loader.min.js"
@@ -195,19 +203,6 @@
             "",
             "?source=" + encodeURIComponent(source),
           );
-        });
-
-        editor.addAction({
-          id: "run-compute-shader",
-          label: "Run compute shader",
-          keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC],
-          precondition: null,
-          keybindingContext: null,
-          contextMenuGroupId: "navigation",
-          contextMenuOrder: 1.5,
-          run: (ed) => {
-            compute(ed.getValue());
-          },
         });
       });
 
