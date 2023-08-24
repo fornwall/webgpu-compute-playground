@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: extractions/setup-just@v1
     - uses: Homebrew/actions/setup-homebrew@master
-    - run: brew install prettier
+    - run: brew install just prettier
     - run: just check
 
   deploy-site:
@@ -26,12 +25,8 @@ jobs:
       deployments: write
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-    - uses: extractions/setup-just@v1
     - uses: Homebrew/actions/setup-homebrew@master
-    - run: brew install prettier
+    - run: brew install just prettier
     - run: just check
     - run: npm i && npm run webpack -- --mode=production
       working-directory: site
