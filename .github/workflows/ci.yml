@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: extractions/setup-just@v1
+    - uses: Homebrew/actions/setup-homebrew@master
+    - run: brew install prettier
+    - run: just check
+
+  deploy-site:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Permissions necessary for ${{ secrets.GITHUB_TOKEN }}
+    # to allow cloudflare/pages-action to create deployment:
+    # https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - uses: extractions/setup-just@v1
+    - uses: Homebrew/actions/setup-homebrew@master
+    - run: brew install prettier
+    - run: just check
+    - run: npm i && npm run webpack -- --mode=production
+      working-directory: site
+    - name: Publish
+      uses: cloudflare/pages-action@1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_PAGES_EDIT_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: compute-fornwall-net
+        directory: .
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
