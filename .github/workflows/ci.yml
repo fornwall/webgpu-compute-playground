@@ -25,9 +25,6 @@ jobs:
       deployments: write
     steps:
       - uses: actions/checkout@v3
-      - uses: Homebrew/actions/setup-homebrew@master
-      - run: brew install just prettier
-      - run: just check
       - name: Publish
         uses: cloudflare/pages-action@1
         with:
