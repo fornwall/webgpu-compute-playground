@@ -163,16 +163,7 @@
         device.popErrorScope().then(handleError);
       }
 
-      async function updateUrl() {
-        const source = getComputeFunction();
-        window.history.replaceState(
-          null,
-          "",
-          "?source=" + encodeURIComponent(source),
-        );
-      }
-
-      const urlParams = new URLSearchParams(window.location.search);
+      const urlParams = new URLSearchParams(window.location.hash.substring(1));
       const sourceFromParam = urlParams.get("source");
       const initialSource = sourceFromParam
         ? sourceFromParam
@@ -205,7 +196,7 @@
           window.history.replaceState(
             null,
             "",
-            "?source=" + encodeURIComponent(source),
+            "#source=" + encodeURIComponent(source),
           );
         });
       });
@@ -213,6 +204,11 @@
       document.querySelector("#helpIcon").addEventListener("click", (e) => {
         e.preventDefault();
         document.querySelector("#helpDialog").showModal();
+      });
+
+      const helpDialog = document.querySelector("#helpDialog");
+      helpDialog.addEventListener("click", (e) => {
+        if (event.target == helpDialog) helpDialog.close();
       });
     </script>
 
